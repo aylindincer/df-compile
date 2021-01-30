@@ -1,27 +1,5 @@
-# Table of Contents
-- [Data Release Overview](#data-release-overview)
-- [XNAT Tokens](#xnat-tokens)
-- [General instructions to run scripts](#general-instructions-to-run-scripts)
-- [Extract data via curl call](#extract-data-via-curl-call)
-- [Running the DF compile script](#running-the-df-compile-script)
-
-<br>
-<br>
-
 # Data Release Overview
 This repository contains scripts to compile the semi-annual data release.
-
-# XNAT Tokens
-XNAT tokens are a secure way of authenticating your request so that XNAT can determine whether you are allowed to perform the action that you are requesting. The tokens expire in a short period of time. Do not share your token with anyone else.
-
-1. Log in to XNAT
-2. Click on your username in the very top right navigation bar to go to your User Account page. 
-3. Click on the "Manage Alias Tokens" tab. 
-4. Click "Create Alias Token".
-5. Click on the generated "Alias" link or the "view" button under the "Actions" column to view the full token
-6. Copy the "alias" and "secret" strings and paste them into the following commands below when specified.
-
-More detailed documentation can be found here: https://wiki.xnat.org/documentation/how-to-use-xnat/generating-an-alias-token-for-scripted-authentication
 
 
 # General instructions to run scripts
