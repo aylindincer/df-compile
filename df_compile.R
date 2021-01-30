@@ -100,7 +100,7 @@ demographicsfs <- function(mydata, field_strength) {
     dplyr::filter( n() > 1 )
   dem_table$long_n[1] <- length(unique(nlong$MAP))
   dem_table$total_session[1] <- length(unique(mrfs_usable$MRI_Accession))
-  write.csv(dem_table, file = paste0("demographics/",xml_date,"_KARI",vDF, "_",field_strength,"FS_dem.csv"), na = "", row.names = FALSE)
+  write.csv(dem_table, file = paste0("demographics/",xml_date,"_",vDF, "_",field_strength,"FS_dem.csv"), na = "", row.names = FALSE)
   
 }
 
@@ -123,7 +123,7 @@ demographicspup <- function(mydata, tracer, proctype) {
     dplyr::filter( n() > 1 )
   dem_table$long_n[1] <- length(unique(nlong$MAP))
   dem_table$total_session[1] <- length(unique(petpup_usable$PET_Accession))
-  write.csv(dem_table, file = paste0("demographics/",xml_date,"_KARI",vDF, "_",tracer,"_",proctype,"_dem.csv"), na = "", row.names = FALSE)
+  write.csv(dem_table, file = paste0("demographics/",xml_date,"_",vDF, "_",tracer,"_",proctype,"_dem.csv"), na = "", row.names = FALSE)
   
 }
 #==================
@@ -144,27 +144,27 @@ demographicspup <- function(mydata, tracer, proctype) {
 #===================================
 # XML data
 #==================
-mr <- read.csv(paste0("xml_pull/",xml_date,"_kari_mr.csv"), 
+mr <- read.csv(paste0("xml_pull/",xml_date,"_mr.csv"), 
                  header = TRUE, stringsAsFactors = FALSE)
-petmr <- read.csv(paste0("xml_pull/",xml_date,"_kari_petmr.csv"), 
+petmr <- read.csv(paste0("xml_pull/",xml_date,"_petmr.csv"), 
                header = TRUE, stringsAsFactors = FALSE)
-fsmr <- read.csv(paste0("xml_pull/",xml_date,"_kari_fsmr.csv"), 
+fsmr <- read.csv(paste0("xml_pull/",xml_date,"_fsmr.csv"), 
                   header = TRUE, stringsAsFactors = FALSE)
-fspet <- read.csv(paste0("xml_pull/",xml_date,"_kari_fspet.csv"), 
+fspet <- read.csv(paste0("xml_pull/",xml_date,"_fspet.csv"), 
                   header = TRUE, stringsAsFactors = FALSE)
-pet <- read.csv(paste0("xml_pull/",xml_date,"_kari_pet.csv"), 
+pet <- read.csv(paste0("xml_pull/",xml_date,"_pet.csv"), 
                 header = TRUE, stringsAsFactors = FALSE)
-pup <- read.csv(paste0("xml_pull/",xml_date,"_kari_pup.csv"), 
+pup <- read.csv(paste0("xml_pull/",xml_date,"_pup.csv"), 
                 header = TRUE, stringsAsFactors = FALSE)
-manpup <- read.csv(paste0("xml_pull/",xml_date,"_kari_manpup.csv"), 
+manpup <- read.csv(paste0("xml_pull/",xml_date,"_manpup.csv"), 
                 header = TRUE, stringsAsFactors = FALSE)
-wmhmr <- read.csv(paste0("xml_pull/",xml_date,"_kari_wmhmr.csv"), 
+wmhmr <- read.csv(paste0("xml_pull/",xml_date,"_wmhmr.csv"), 
                    header = TRUE, stringsAsFactors = FALSE)
-wmhpet <- read.csv(paste0("xml_pull/",xml_date,"_kari_wmhpet.csv"), 
+wmhpet <- read.csv(paste0("xml_pull/",xml_date,"_wmhpet.csv"), 
                   header = TRUE, stringsAsFactors = FALSE)
-radreadmr <- read.csv(paste0("xml_pull/",xml_date,"_kari_radreadmr.csv"), 
+radreadmr <- read.csv(paste0("xml_pull/",xml_date,"_radreadmr.csv"), 
                   header = TRUE, stringsAsFactors = FALSE)
-radreadpet <- read.csv(paste0("xml_pull/",xml_date,"_kari_radreadpet.csv"), 
+radreadpet <- read.csv(paste0("xml_pull/",xml_date,"_radreadpet.csv"), 
                    header = TRUE, stringsAsFactors = FALSE)
 #==================
 
@@ -178,10 +178,10 @@ fs_names <- read.csv("required_docs/fs_columns.csv",
 fstrength_miss <- read.csv("required_docs/mr_fieldstrength_missing.csv", 
                            header = TRUE, stringsAsFactors = FALSE)
 
-# CSV to remove non-KARI participants (DIAN, FTD, etc.)
+# CSV to remove non-K participants
 non_k <- read.csv("required_docs/non_k.csv",
                      header = TRUE, stringsAsFactors = FALSE)
-non_k <- non_kari[c("MAP", "STUDY")]
+non_k <- non_k[c("MAP", "STUDY")]
 #==================
 #===================================
 
@@ -358,8 +358,7 @@ mr_all <- filter(mr_all, !MR_status %in% rm_mrstatus)
 #==================
 #===================================
 
-# Remove non-KARI participants
-# This needs a double check (esp on FTD)
+# Remove non-K participants
 #===================================
 # Remove non-MAP
 #==================
@@ -367,12 +366,12 @@ mr_all <- mr_all[!(is.na(mr_all$MAP) | mr_all$MAP==""), ]
 
 #==================
 
-# Identify DIAN + NON_KARI
+# Identify non_k2
 #==================
-non_k <- non_kari[!(is.na(non_k$MAP) | non_k$MAP==""), ]
-non_k$MAP <- as.character(non_k$MAP)
+non_k2 <- non_k[!(is.na(non_k$MAP) | non_k$MAP==""), ]
+non_k2$MAP <- as.character(non_k2$MAP)
 
-mr_all <- left_join(mr_all, non_kari, by = "MAP")
+mr_all <- left_join(mr_all, non_k2, by = "MAP")
 #==================
 #===================================
 
@@ -439,8 +438,8 @@ mrfs3T <- arrange(mrfs3T, FS_QC_Status)
 
 # Write FS output
 #==================
-write.csv(mrfs15T, file = paste0("data/",xml_date, "_KARI",vDF, "_15TFS.csv"), na = "", row.names = FALSE)
-write.csv(mrfs3T, file = paste0("data/",xml_date, "_KARI",vDF, "_3TFS.csv"), na = "", row.names = FALSE)
+write.csv(mrfs15T, file = paste0("data/",xml_date, "_",vDF, "_15TFS.csv"), na = "", row.names = FALSE)
+write.csv(mrfs3T, file = paste0("data/",xml_date, "_",vDF, "_3TFS.csv"), na = "", row.names = FALSE)
 #==================
 #===================================
 
@@ -607,9 +606,9 @@ pet <- pet[!(is.na(pet$MAP) | pet$MAP==""), ]
 pet$MAP <- as.character(pet$MAP)
 #==================
 
-# Identify DIAN + NON_KARI
+# Identify non_k
 #==================
-pet <- left_join(pet, non_kari, by = "MAP")
+pet <- left_join(pet, non_k, by = "MAP")
 #==================
 
 #Keep PiB, AV45, AV1451, FDG Tracers
@@ -789,14 +788,14 @@ demographicspup(FDG_man, 'FDG', 'man')
 
 # Write PUP output
 #==================
-write.csv(PIB_fs, file = paste0("data/",xml_date, "_KARI",vDF,"_PIB.csv"), na = "", row.names = FALSE)
-write.csv(AV45_fs, file = paste0("data/",xml_date,"_KARI",vDF, "_AV45.csv"), na = "", row.names = FALSE)
-write.csv(AV1451_fs, file = paste0("data/",xml_date, "_KARI",vDF,"_AV1451.csv"), na = "", row.names = FALSE)
-write.csv(FDG_fs, file = paste0("data/",xml_date,"_KARI",vDF, "_FDG.csv"), na = "", row.names = FALSE)
-write.csv(PIB_man, file = paste0("data/",xml_date, "_KARI",vDF,"_PIB_man.csv"), na = "", row.names = FALSE)
-write.csv(AV45_man, file = paste0("data/",xml_date, "_KARI",vDF,"_AV45_man.csv"), na = "", row.names = FALSE)
-write.csv(AV1451_man, file = paste0("data/",xml_date, "_KARI",vDF,"_AV1451_man.csv"), na = "", row.names = FALSE)
-write.csv(FDG_man, file = paste0("data/",xml_date, "_KARI",vDF,"_FDG_man.csv"), na = "", row.names = FALSE)
+write.csv(PIB_fs, file = paste0("data/",xml_date, "_",vDF,"_PIB.csv"), na = "", row.names = FALSE)
+write.csv(AV45_fs, file = paste0("data/",xml_date,"_",vDF, "_AV45.csv"), na = "", row.names = FALSE)
+write.csv(AV1451_fs, file = paste0("data/",xml_date, "_",vDF,"_AV1451.csv"), na = "", row.names = FALSE)
+write.csv(FDG_fs, file = paste0("data/",xml_date,"_",vDF, "_FDG.csv"), na = "", row.names = FALSE)
+write.csv(PIB_man, file = paste0("data/",xml_date, "_",vDF,"_PIB_man.csv"), na = "", row.names = FALSE)
+write.csv(AV45_man, file = paste0("data/",xml_date, "_",vDF,"_AV45_man.csv"), na = "", row.names = FALSE)
+write.csv(AV1451_man, file = paste0("data/",xml_date, "_",vDF,"_AV1451_man.csv"), na = "", row.names = FALSE)
+write.csv(FDG_man, file = paste0("data/",xml_date, "_",vDF,"_FDG_man.csv"), na = "", row.names = FALSE)
 #==================
 #===================================
 
@@ -869,7 +868,7 @@ mrwmh <- arrange(mrwmh, MR_Date)
 
 # Write WMH output
 #==================
-write.csv(mrwmh, file = paste0("data/",xml_date, "_KARI",vDF,"_WMH.csv"), na = "", row.names = FALSE)
+write.csv(mrwmh, file = paste0("data/",xml_date, "_",vDF,"_WMH.csv"), na = "", row.names = FALSE)
 #==================
 #===================================
 
@@ -939,7 +938,7 @@ mrradread <- arrange(mrradread, MR_Date)
 
 # Write radread output
 #==================
-write.csv(mrradread, file = paste0("data/",xml_date, "_KARI",vDF,"_RADREAD.csv"), na = "", row.names = FALSE)
+write.csv(mrradread, file = paste0("data/",xml_date, "_",vDF,"_RADREAD.csv"), na = "", row.names = FALSE)
 #==================
 
 #===================================
@@ -1001,7 +1000,7 @@ colnames(cnda_mrradread) <- master_cnda_cols
 # Merge
 #==================
 cnda_final <- rbind(cnda_mrfs15T, cnda_mrfs3T, cnda_petpup_fs, cnda_mrwmh, cnda_mrradread)
-cnda_final$NEW_PROJECT <- "KARIDF"
+cnda_final$NEW_PROJECT <- "DF"
 write.csv(cnda_final, file = paste0("data/",xml_date, "_",vDF,"_mastercnda.csv"), na = "", row.names = FALSE)
 #==================
 #===============================================
@@ -1029,8 +1028,8 @@ reqstat_petpup_fs <- filter(petpup_fs, grepl('Require', PET_status))
 rm(AV1451_fs,AV1451_man,AV45_fs,AV45_man,cnda_final,cnda_mrfs15T,cnda_mrfs3T,cnda_mrradread,
    cnda_mrwmh,cnda_petpup_fs,FDG_fs,FDG_man,fs,fs_names,fsmr,fspet,
    fstrength_miss,manpup,mr,mr_15T,mr_3T,mr_all,mrfs15T,
-   mrfs3T,mrradread,mrwmh,non_kari,pet,petmr,petpup_fs,petpup_man,
+   mrfs3T,mrradread,mrwmh,non_k,pet,petmr,petpup_fs,petpup_man,
    PIB_fs,PIB_man,pup, pup_fs, pup_man, radread, radreadmr, radreadpet,
-   wmh, wmhmr, wmhpet, fs_ver,kari_projects, keep_fs, keep_pup, master_cnda_cols,
+   wmh, wmhmr, wmhpet, fs_ver,projects, keep_fs, keep_pup, master_cnda_cols,
    petmr_scanner, remove_study, rm_fs, rm_mrstatus, rm_petstatus, rm_pup)
 #===============================================
