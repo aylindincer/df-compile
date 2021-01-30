@@ -1,5 +1,5 @@
 # Data Release Overview
-This repository contains scripts to compile the semi-annual data release.
+This repository contains example scripts for compiling the semi-annual data release.
 
 
 # General instructions to run scripts
