@@ -1,5 +1,5 @@
 # Data Release Overview
-This repository contains example scripts for compiling the semi-annual data release.
+This repository contains example scripts and typical instructions for compiling the semi-annual data release. 
 
 
 # General instructions to run scripts
@@ -10,15 +10,12 @@ This repository contains example scripts for compiling the semi-annual data rele
 ```
 data/
 demographics/
-required_docs/
-xml_files/
-xml_pull/
 df_compile.R
 curl_xml.sh
 
 ```
 
-3. Check to make sure the `xml_files/` directory has 11 '.xml' files with the following names:
+3. Check to make sure the `xml_files/` directory has '.xml' files with the following names:
 ```
 fsmr.xml
 fspet.xml
@@ -89,17 +86,11 @@ For example, 20201119_mr.csv was pulled on November 19, 2020 and it's pulling da
 # Running the DF compile script
 **df_compile.R**
 
-This script cleans and organizes all imaging data, reformat for distribution, and outputs the demographic tables needed for the data ditionary and creates a CSV used for adding data to the XNAT database.
+This script cleans and organizes all imaging data, reformat for distribution, and outputs the demographic tables needed for the data dictionary and creates a CSV used for adding data to the XNAT database.
 
 1. Make sure you ran the df_curl_xml.sh script and 11 .csv files were created with the same date.
 
-2. In the R script, update the following variables under the section "User Input"
-
-    * `xml_date` variable set to the targeted xml file dates with the following format: YYYYMMDD
-
-    * `vDF` variable to the current data freeze release with the following format: DF#
-
-    * Update any changes to the project list under the `projects` variable
+2. In the R script, update the variables under the section "User Input"
 
 3.  Run the entire R script.
 
